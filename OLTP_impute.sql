@@ -26,12 +26,30 @@ WITH (fieldterminator='\t', rowterminator='\n')
 GO
 
 -- stocks.csv
-
+BULK INSERT production.stocks
+FROM 'C:\deng_ca2_data\Stocks.csv'
+WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+GO
 -- customers.csv
-
+BULK INSERT sales.customers
+FROM 'C:\deng_ca2_data\customers.csv'
+WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+GO
 -- orderitems.csv
+BULK INSERT sales.order_items
+FROM 'C:\deng_ca2_data\OrderItems.csv'
+WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+GO
 
+
+
+--NOT WORKING DATE TYPE ISSUE
 -- orders.csv
+BULK INSERT sales.orders    
+FROM 'C:\deng_ca2_data\Orders.csv'
+WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+GO
+
 
 -- products.json
 Declare @Products varchar(max)
