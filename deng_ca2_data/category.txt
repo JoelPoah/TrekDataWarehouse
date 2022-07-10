@@ -1,4 +1,3 @@
-category_id category_name
 CHB1 Children Bicycles
 CMB2 Comfort Bicycles
 CRB3 Cruisers Bicycles
