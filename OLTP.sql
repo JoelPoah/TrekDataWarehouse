@@ -27,8 +27,8 @@ email VARCHAR (255) NOT NULL UNIQUE,
 phone VARCHAR (25),
 active int NOT NULL,
 store_id varchar(5) NOT NULL,
-manager_id int,
---changed both store_id and manager_id to int
+manager_id int NULL,
+--changed manager_id to int
 FOREIGN KEY (store_id) REFERENCES sales.stores (store_id)
 ON DELETE CASCADE
 ON UPDATE CASCADE,
