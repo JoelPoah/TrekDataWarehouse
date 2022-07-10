@@ -2,16 +2,16 @@ USE BikeSalesMinions
 GO
 
 BULK INSERT production.categories
-FROM 'C:\Users\LG\OneDrive - Singapore Polytechnic\Desktop\DENG\CA2\category.txt'
+FROM 'C:\deng_ca2_data\category.txt'
 WITH (fieldterminator=' ', rowterminator='\n')
 
 GO
 BULK INSERT production.brands
-FROM 'C:\Users\LG\OneDrive - Singapore Polytechnic\Desktop\DENG\CA2\brand.txt'
+FROM 'C:\deng_ca2_data\brand.txt'
 WITH (fieldterminator=' ', rowterminator='\n')
 GO
 BULK INSERT sales.stores
-FROM 'C:\Users\LG\OneDrive - Singapore Polytechnic\Desktop\DENG\CA2\stores.txt'
+FROM 'C:\deng_ca2_data\stores.txt'
 WITH (fieldterminator='\t', rowterminator='\n')
 GO
 /**
@@ -20,7 +20,7 @@ INSERT INTO sales.stores VALUES ('ST2','Baldwin Bikes','(516) 379-8888','baldwin
 INSERT INTO sales.stores VALUES ('ST3','Rowlett Bikes','(972) 530-5555','rowlett@bikes.shop','8000 Fairway Avenue','Rowlett','TX',75088)
 **/
 BULK INSERT sales.staffs
-FROM 'C:\Users\LG\OneDrive - Singapore Polytechnic\Desktop\DENG\CA2\staff.txt'
+FROM 'C:\deng_ca2_data\staff.txt'
 WITH (fieldterminator='\t', rowterminator='\n')
 GO
 
@@ -28,7 +28,7 @@ GO
 Declare @Products varchar(max)
 Select @Products =
 BulkColumn
-from OPENROWSET(BULK 'C:\Users\LG\OneDrive - Singapore Polytechnic\Desktop\DENG\CA2\products.json', SINGLE_BLOB) JSON
+from OPENROWSET(BULK 'C:\deng_ca2_data\products.json', SINGLE_BLOB) JSON
 Insert into production.products
 Select * From OpenJSON(@Products, '$')
 with (
