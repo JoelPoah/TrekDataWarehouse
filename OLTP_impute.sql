@@ -4,12 +4,13 @@ GO
 BULK INSERT production.categories
 FROM 'C:\deng_ca2_data\category.txt'
 WITH (fieldterminator=' ', rowterminator='\n')
-
 GO
+
 BULK INSERT production.brands
 FROM 'C:\deng_ca2_data\brand.txt'
 WITH (fieldterminator=' ', rowterminator='\n')
 GO
+
 BULK INSERT sales.stores
 FROM 'C:\deng_ca2_data\stores.txt'
 WITH (fieldterminator='\t', rowterminator='\n')
