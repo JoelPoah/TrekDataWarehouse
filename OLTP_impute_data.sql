@@ -42,6 +42,7 @@ WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
 GO
 
 -- orders.csv
+-- data type in create table is varchar for date attributes
 BULK INSERT sales.orders    
 FROM 'C:\deng_ca2_data\Orders.csv'
 WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
