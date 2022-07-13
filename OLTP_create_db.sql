@@ -1,3 +1,12 @@
+-- Run the commented code below if you want to drop the OLTP db
+/**
+use master
+Alter Database BikeSalesMinions
+SET SINGLE_USER 
+WITH ROLLBACK IMMEDIATE 
+DROP DATABASE BikeSalesMinions
+**/
+
 CREATE DATABASE BikeSalesMinions
 GO 
 
