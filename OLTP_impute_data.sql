@@ -1,31 +1,57 @@
 USE BikeSalesMinions
 GO
 
+-- category.txt
 BULK INSERT production.categories
 FROM 'C:\deng_ca2_data\category.txt'
 WITH (fieldterminator=' ', rowterminator='\n')
 GO
 
+-- brand.txt
 BULK INSERT production.brands
 FROM 'C:\deng_ca2_data\brand.txt'
 WITH (fieldterminator=' ', rowterminator='\n')
 GO
 
+-- stores.txt
 BULK INSERT sales.stores
 FROM 'C:\deng_ca2_data\stores.txt'
 WITH (fieldterminator='\t', rowterminator='\n')
 GO
-/**
-INSERT INTO sales.stores VALUES ('ST1','Santa Cruz Bikes','(831) 476-4321','santacruz@bikes.shop','3700 Portola Drive','Santa Cruz','CA',95060)
-INSERT INTO sales.stores VALUES ('ST2','Baldwin Bikes','(516) 379-8888','baldwin@bikes.shop','4200 Chestnut Lane','Baldwin','NY',11432)
-INSERT INTO sales.stores VALUES ('ST3','Rowlett Bikes','(972) 530-5555','rowlett@bikes.shop','8000 Fairway Avenue','Rowlett','TX',75088)
-**/
+
+-- staff.txt
 BULK INSERT sales.staffs
 FROM 'C:\deng_ca2_data\staff.txt'
 WITH (fieldterminator='\t', rowterminator='\n')
 GO
 
+-- stocks.csv
+BULK INSERT production.stocks
+FROM 'C:\deng_ca2_data\Stocks.csv'
+WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+GO
+-- customers.csv
+BULK INSERT sales.customers
+FROM 'C:\deng_ca2_data\customers.csv'
+WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+GO
+-- orderitems.csv
+BULK INSERT sales.order_items
+FROM 'C:\deng_ca2_data\OrderItems.csv'
+WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+GO
 
+
+
+--NOT WORKING DATE TYPE ISSUE
+-- orders.csv
+BULK INSERT sales.orders    
+FROM 'C:\deng_ca2_data\Orders.csv'
+WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+GO
+
+
+-- products.json
 Declare @Products varchar(max)
 Select @Products =
 BulkColumn
