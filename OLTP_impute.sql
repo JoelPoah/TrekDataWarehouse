@@ -41,15 +41,11 @@ FROM 'C:\deng_ca2_data\OrderItems.csv'
 WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
 GO
 
-
-
---NOT WORKING DATE TYPE ISSUE
 -- orders.csv
 BULK INSERT sales.orders    
 FROM 'C:\deng_ca2_data\Orders.csv'
 WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
 GO
-
 
 -- products.json
 Declare @Products varchar(max)
