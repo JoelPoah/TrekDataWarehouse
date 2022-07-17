@@ -16,3 +16,9 @@ full outer join Production.stocks s ON p.product_id = s.product_id
 
 select * from production.stocks s
 full outer join Production.products p ON p.product_id  = s.product_id
+
+// ALSO IF DENORMALIZE GOT TO FILL IN NULL VALUES 
+// for example
+select * from production.stocks s
+full outer join Production.products p ON p.product_id  = s.product_id
+where p.product_id = 'RDB320' 
