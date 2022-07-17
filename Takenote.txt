@@ -1,3 +1,5 @@
+This text file states the things to take note when doing ETL/designing warehouse.
+
 // Realise that there are 8 products not in stock table
 select product_id from production.products where product_id not in(select product_id from Production.stocks)
 
@@ -22,3 +24,8 @@ full outer join Production.products p ON p.product_id  = s.product_id
 select * from production.stocks s
 full outer join Production.products p ON p.product_id  = s.product_id
 where p.product_id = 'RDB320' 
+
+
+Keeping order date, required date and shipped date is a must to track
+efficiency but also bluntly stated on page 5 of CA2. Thus design must 
+differ from Practical E 
