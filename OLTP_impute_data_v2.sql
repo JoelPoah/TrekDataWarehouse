@@ -20,9 +20,10 @@ UPDATE sales.customers SET phone = NULLIF(phone,'NULL') -- changed NULL from str
 FROM sales.customers;
 
 
--- stores.txt
+-- stores.txt (3 rows, no NULL values)
 BULK INSERT sales.stores 
-FROM 'c:\deng_ca2_data\stores.txt'
+FROM 'C:\deng_ca2_data\stores.txt' 
 WITH (
-    ROWTERMINATOR ='\t'
+    FIELDTERMINATOR='\t',
+	ROWTERMINATOR='\n'
 )
