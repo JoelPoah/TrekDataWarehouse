@@ -41,6 +41,5 @@ ON p.product_id  = s.product_id
 WHERE p.product_id = 'RDB320'; 
 ```
 
-
 3. Keeping order date, required date and shipped date is a must to trackefficiency but also bluntly stated on page 5 of CA2. Thus design must differ from Practical E 
 
