@@ -47,8 +47,8 @@ CREATE TABLE Product (
     product_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
     product_id VARCHAR(10) NOT NULL,
     product_name VARCHAR(255) NOT NULL,
-    brand_name VARCHAR(5) NOT NULL,  -- joined from oltp brands table
-    category_name VARCHAR(5) NOT NULL, -- joined from oltp categories table
+    brand_name VARCHAR(255) NOT NULL,  -- joined from oltp brands table
+    category_name VARCHAR(255) NOT NULL, -- joined from oltp categories table
     model_year INT NOT NULL,
     quantity INT NOT NULL, -- joined from oltp stocks table
     stock_take_date DATETIME NOT NULL -- takes current date when quantity is updated
