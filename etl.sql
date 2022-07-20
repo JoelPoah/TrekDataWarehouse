@@ -1,10 +1,19 @@
 -- ETL Script
 
 -- Product Dimension
+-- query has issues
 INSERT INTO BikeSalesDWMinions..Product(product_id, product_name, brand_name, category_name, model_year, quantity, stock_take_date)
-SELECT p.product_id, p.product_name, REPLACE(b.brand_name, ' ', ''), 
-	c.category_name, p.model_year,  s.quantity, GETDATE()
-FROM Production.products AS p, Production.categories AS c, Production.brands as b, Production.stocks as s;
+SELECT s.product_id, p.product_name, REPLACE(b.brand_name, ' ', '') 'brand_name', 
+	c.category_name, p.model_year,  SUM(s.quantity) 'quantity', GETDATE() 'stock-date'
+FROM Production.products AS p, Production.categories AS c, Production.brands as b, Production.stocks as s
+GROUP BY s.product_id, p.product_name;
+
+-- table join stocks with other tables
+SELECT s.product_id, p.product_name,SUM(s.quantity) as 'Total'
+FROM Production.stocks AS s,Production.products as p
+where p.product_id= s.product_id
+GROUP BY s.product_id,p.product_name;
+
 
 -- Staff Dimension
 INSERT INTO Staff
