@@ -8,8 +8,11 @@ select product_id from production.products where product_id not in(select produc
 <br>
 
 2. Performing a inner join will leave out the 8 products
-select * from production.products p,Production.stocks s
-where s.product_id = p.product_id
+
+```sql
+SELECT * FROM production.products p, Production.stocks s
+WHERE s.product_id = p.product_id
+```
 
 <br>
 
