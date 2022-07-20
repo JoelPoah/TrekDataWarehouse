@@ -51,6 +51,29 @@ CREATE TABLE Product (
     category_name VARCHAR(5) NOT NULL, -- joined from oltp categories table
     model_year INT NOT NULL,
     quantity INT NOT NULL, -- joined from oltp stocks table
-    stock_take_date DATETIME
+    stock_take_date DATETIME NOT NULL -- takes current date when quantity is updated
 );
 GO
+
+CREATE TABLE [Time] (
+    time_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
+    [time] DATE NOT NULL,
+    day_of_week VARCHAR(9) NOT NULL,
+    season VARCHAR(6) NOT NULL
+);
+GO
+
+CREATE TABLE SalesFacts (
+    customer_key INT NOT NULL FOREIGN KEY REFERENCES Customer(customer_key),
+    staff_key INT NOT NULL FOREIGN KEY REFERENCES Staff(staff_key),
+    store_key INT NOT NULL FOREIGN KEY REFERENCES Store(store_key),
+    product_key INT NOT NULL FOREIGN KEY REFERENCES Product(product_key),
+    time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_key),
+    order_status INT NOT NULL,
+    order_id VARCHAR(10) NOT NULL,
+    order_quantity INT NOT NULL,
+    list_price DECIMAL(10, 2) NOT NULL,
+    discount DECIMAL(4, 2) NOT NULL,
+
+    PRIMARY KEY (customer_key, staff_key, store_key, product_key, time_key)
+)
