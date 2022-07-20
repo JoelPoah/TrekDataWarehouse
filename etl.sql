@@ -1,9 +1,9 @@
 -- ETL Script
 
 -- Product Dimension
-INSERT INTO Product
-SELECT p.product_id, p.product_name, c.category_name, 
-    p.model_year, b.brand_name, s.quantity, GETDATE() 'Stock Take Date'
+INSERT INTO BikeSalesDWMinions..Product(product_id, product_name, brand_name, category_name, model_year, quantity, stock_take_date)
+SELECT p.product_id, p.product_name, REPLACE(b.brand_name, ' ', ''), 
+	c.category_name, p.model_year,  s.quantity, GETDATE()
 FROM Production.products AS p, Production.categories AS c, Production.brands as b, Production.stocks as s;
 
 -- Staff Dimension
