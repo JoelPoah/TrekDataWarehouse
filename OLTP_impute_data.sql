@@ -4,13 +4,13 @@ GO
 -- category.txt
 BULK INSERT production.categories
 FROM 'C:\deng_ca2_data\category.txt'
-WITH (fieldterminator=' ', rowterminator='\n')
+WITH (fieldterminator='\t', rowterminator='\n')
 GO
 
 -- brand.txt
 BULK INSERT production.brands
 FROM 'C:\deng_ca2_data\brand.txt'
-WITH (fieldterminator=' ', rowterminator='\n')
+WITH (fieldterminator='\t', rowterminator='\n')
 GO
 
 -- stores.txt
@@ -33,7 +33,13 @@ GO
 -- customers.csv
 BULK INSERT sales.customers
 FROM 'C:\deng_ca2_data\customers.csv'
-WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+WITH (
+	FIRSTROW = 2, -- 1st row is header
+	FIELDTERMINATOR = ',', -- csv field delimiter
+	ROWTERMINATOR = '\n'
+)
+UPDATE sales.customers SET phone = NULLIF(phone,'NULL') -- changed NULL from string value to actual NULL value
+FROM sales.customers;
 GO
 -- orderitems.csv
 BULK INSERT sales.order_items

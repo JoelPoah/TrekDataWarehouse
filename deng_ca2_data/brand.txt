@@ -1,9 +1,9 @@
-BRD1    Electra
-BRD2    Haro
-BRD3    Heller
-BRD4    Pure Cycles
-BRD5    Ritchey
-BRD6    Strider
-BRD7    Sun Bicycles
-BRD8    Surly
-BRD9    Trek
+BRD1	Electra
+BRD2	Haro
+BRD3	Heller
+BRD4	Pure Cycles
+BRD5	Ritchey
+BRD6	Strider
+BRD7	Sun Bicycles
+BRD8	Surly
+BRD9	Trek

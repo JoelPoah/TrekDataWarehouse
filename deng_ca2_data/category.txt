@@ -1,8 +1,8 @@
-CHB1 Children Bicycles
-CMB2 Comfort Bicycles
-CRB3 Cruisers Bicycles
-CYB4 Cyclocross Bicycles
-ELB5 Electric Bikes
-MOB6 Mountain Bikes
-RDB7 Road Bikes
+CHB1	Children Bicycles
+CMB2	Comfort Bicycles
+CRB3	Cruisers Bicycles
+CYB4	Cyclocross Bicycles
+ELB5	Electric Bikes
+MOB6	Mountain Bikes
+RDB7	Road Bikes
 
