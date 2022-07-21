@@ -79,3 +79,4 @@ CREATE TABLE SalesFacts (
 
     PRIMARY KEY (customer_key, staff_key, store_key, product_key, order_time_key, required_time_key, ship_time_key)
 )
+
