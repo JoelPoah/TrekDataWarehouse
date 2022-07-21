@@ -68,12 +68,14 @@ CREATE TABLE SalesFacts (
     staff_key INT NOT NULL FOREIGN KEY REFERENCES Staff(staff_key),
     store_key INT NOT NULL FOREIGN KEY REFERENCES Store(store_key),
     product_key INT NOT NULL FOREIGN KEY REFERENCES Product(product_key),
-    time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_key),
+    order_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_key),
+    required_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_key),
+    ship_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_key),
     order_status INT NOT NULL,
     order_id VARCHAR(10) NOT NULL,
     order_quantity INT NOT NULL,
     list_price DECIMAL(10, 2) NOT NULL,
     discount DECIMAL(4, 2) NOT NULL,
 
-    PRIMARY KEY (customer_key, staff_key, store_key, product_key, time_key)
+    PRIMARY KEY (customer_key, staff_key, store_key, product_key, order_time_key, required_time_key, ship_time_key)
 )
