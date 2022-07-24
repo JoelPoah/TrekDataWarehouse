@@ -1,3 +1,11 @@
+-- Run the commented code below if you want to drop the DW
+/**
+use master
+Alter Database BikeSalesDWMinions
+SET SINGLE_USER 
+WITH ROLLBACK IMMEDIATE 
+DROP DATABASE BikeSalesDWMinions
+**/
 CREATE DATABASE BikeSalesDWMinions
 GO
 
