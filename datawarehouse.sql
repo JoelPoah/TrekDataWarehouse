@@ -13,8 +13,8 @@ USE BikeSalesDWMinions
 GO
 
 CREATE TABLE Customer (
-    customer_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
-    customer_id VARCHAR(10) NOT NULL,
+    customer_key INT IDENTITY(1,1) , --surrogate key
+    customer_id VARCHAR(10) ,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     phone VARCHAR(25),
@@ -23,43 +23,47 @@ CREATE TABLE Customer (
     city VARCHAR(50),
     [state] VARCHAR(25),
     zip_code VARCHAR(5),
+    primary key (customer_key, customer_id)
 );
 GO
 
 CREATE TABLE Staff (
-    staff_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
-    staff_id VARCHAR(5) NOT NULL,
+    staff_key INT IDENTITY(1,1) , --surrogate key
+    staff_id VARCHAR(5) ,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone VARCHAR(25),
     active INT NOT NULL,
     store_id VARCHAR(5) NOT NULL,
+    primary key (staff_key, staff_id)
 );
 GO
 
 CREATE TABLE Store (
-    store_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
-    store_id VARCHAR(5) NOT NULL,
+    store_key INT IDENTITY(1,1), --surrogate key
+    store_id VARCHAR(5),
     store_name VARCHAR(255) NOT NULL,
     phone VARCHAR(25),
     email VARCHAR(255),
     street VARCHAR(255),
     city VARCHAR(255),
     [state] VARCHAR(10),
-    zip_code VARCHAR(5)
+    zip_code VARCHAR(5),
+    primary key (store_key, store_id)
 );
 GO
 
 CREATE TABLE Product (
-    product_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
-    product_id VARCHAR(10) NOT NULL,
+    product_key INT IDENTITY(1,1), --surrogate key
+    product_id VARCHAR(10) ,
     product_name VARCHAR(255) NOT NULL,
     brand_name VARCHAR(255) NOT NULL,  -- joined from oltp brands table
     category_name VARCHAR(255) NOT NULL, -- joined from oltp categories table
     model_year INT NOT NULL,
     quantity INT NOT NULL, -- joined from oltp stocks table
     stock_take_date DATETIME NOT NULL -- takes current date when quantity is updated
+    primary key (product_key, product_id)
 );
 GO
 
@@ -71,7 +75,8 @@ GO
 --     season VARCHAR(6) NOT NULL
 -- );
 CREATE TABLE Time
-	(	[time_key] INT primary key, 
+	(	[time_key] INT IDENTITY(1,1),
+        [time_id] INT , 
 		[Date] DATETIME,
 		[FullDateUK] CHAR(10), -- Date in dd-MM-yyyy format
 		[DayOfMonth] VARCHAR(2), -- Field will hold day number of Month
@@ -82,19 +87,20 @@ CREATE TABLE Time
 		[QuarterName] VARCHAR(9),--First,Second..
 		[Year] CHAR(4),-- Year value of Date stored in Row
 		[IsWeekday] BIT,-- 0=Week End ,1=Week Day
+        primary key (time_key, time_id)
 
 
 );
 GO
 
 CREATE TABLE SalesFacts (
-    customer_key INT NOT NULL FOREIGN KEY REFERENCES Customer(customer_key),
-    staff_key INT NOT NULL FOREIGN KEY REFERENCES Staff(staff_key),
-    store_key INT NOT NULL FOREIGN KEY REFERENCES Store(store_key),
-    product_key INT NOT NULL FOREIGN KEY REFERENCES Product(product_key),
-    order_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_key),
-    required_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_key),
-    ship_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_key),
+    customer_key varchar(10) NOT NULL FOREIGN KEY REFERENCES Customer(customer_id),
+    staff_key varchar(5) NOT NULL FOREIGN KEY REFERENCES Staff(staff_id),
+    store_key varchar(5) NOT NULL FOREIGN KEY REFERENCES Store(store_id),
+    product_key varchar(10) NOT NULL FOREIGN KEY REFERENCES Product(product_id),
+    order_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_id),
+    required_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_id),
+    ship_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_id),
     order_status INT NOT NULL,
     order_id VARCHAR(10) NOT NULL,
     order_quantity INT NOT NULL,
