@@ -5,7 +5,9 @@ GO
 
 -- Product Dimension working query (have not added insert into dw)
 INSERT INTO BikeSalesDWMinions..Product
-SELECT p.product_id, p.product_name, p.brand_id, p.category_id, p.model_year, ISNULL(s.[Stock Quantity], 0) 'Stock Quantity', CAST(GETDATE() AS Date) 'Stock Take Date'
+SELECT p.product_id, p.product_name, p.brand_id, p.category_id, p.model_year, 
+ISNULL(s.[Stock Quantity], 0) 'Stock Quantity',
+ CAST(GETDATE() AS Date) 'Stock Take Date'
 FROM Production.products AS p
 LEFT JOIN (
 	SELECT product_id, SUM(quantity) 'Stock Quantity' FROM Production.stocks
@@ -37,3 +39,63 @@ SELECT c.customer_id, c.first_name, c.last_name, c.phone,
     c.email, c.street, c.city, c.state, c.zip_code
 FROM Sales.customers AS c;
 GO
+
+--Time Dimension 
+
+
+Use BikeSalesDWMinions
+
+DECLARE @StartDate DATETIME = '20160101' --Starting value of Date Range
+DECLARE @EndDate DATETIME = '20221231' --End Value of Date Range
+
+DECLARE @curDate DATE
+DECLARE @FirstDayMonth DATE
+DECLARE @QtrMonthNo int
+DECLARE @FirstDayQtr DATE
+
+SET @curdate = @StartDate
+while @curDate < @EndDate 
+  Begin
+		   
+    SET @FirstDayMonth = DateFromParts(Year(@curDate), Month(@curDate), '01')
+	SET @QtrMonthNo = ((DatePart(Quarter, @CurDate) - 1) * 3) + 1 
+    Set @FirstDayQtr = DateFromParts(Year(@curDate), @QtrMonthNo, '01')
+
+	INSERT INTO [Time]
+    select 
+	  CONVERT (char(8),@curDate,112) as time_key,
+	  @CurDate AS Date,
+	  CONVERT (char(10), @CurDate,103) as FullDateUK,
+
+	  DATEPART(Day, @curDate) AS DayOfMonth,
+	  DATENAME(WeekDay, @curDate) AS DayName,
+
+	  DatePart(Month, @curDate) AS Month,
+	  Datename(Month, @curDate) AS MonthName,
+
+	  DatePart(Quarter, @curDate) as Quarter,
+	  CASE DatePart(Quarter, @curDate)
+			WHEN 1 THEN 'First'
+			WHEN 2 THEN 'Second'
+			WHEN 3 THEN 'Third'
+			WHEN 4 THEN 'Fourth'
+	  END AS QuarterName,
+	  DatePart(Year, @curDate) as Year,
+
+
+	  CASE
+		WHEN DATEPART(WeekDay, @curDate) in (1, 7) THEN 0
+		WHEN DATEPART(WeekDay, @curDate) in (2, 3, 4, 5, 6) THEN 1
+	  END as IsWeekDay
+   	
+		
+    /* Increate @curDate by 1 day */
+	SET @curDate = DateAdd(Day, 1, @curDate)
+  End
+
+
+
+
+-- Fact table join
+
+
