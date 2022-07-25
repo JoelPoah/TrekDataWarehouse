@@ -2,7 +2,7 @@
    Purpose: To create the Time dimension table
 */
 
-Use NorthWindDW
+Use BikeSalesDWMinions
 
 DECLARE @StartDate DATETIME = '20160101' --Starting value of Date Range
 DECLARE @EndDate DATETIME = '20221231' --End Value of Date Range
@@ -20,7 +20,7 @@ while @curDate < @EndDate
 	SET @QtrMonthNo = ((DatePart(Quarter, @CurDate) - 1) * 3) + 1 
     Set @FirstDayQtr = DateFromParts(Year(@curDate), @QtrMonthNo, '01')
 
-	INSERT INTO [TimeDim]
+	INSERT INTO [Time]
     select 
 	  CONVERT (char(8),@curDate,112) as TimeKey,
 	  @CurDate AS Date,

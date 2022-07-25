@@ -63,8 +63,9 @@ CREATE TABLE Product (
 );
 GO
 
+
 CREATE TABLE [Time] (
-    time_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
+    time_key INT PRIMARY KEY, --surrogate key
     [time] DATE NOT NULL,
     day_of_week VARCHAR(9) NOT NULL,
     season VARCHAR(6) NOT NULL
