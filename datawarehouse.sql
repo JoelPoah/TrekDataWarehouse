@@ -64,11 +64,26 @@ CREATE TABLE Product (
 GO
 
 
-CREATE TABLE [Time] (
-    time_key INT PRIMARY KEY, --surrogate key
-    [time] DATE NOT NULL,
-    day_of_week VARCHAR(9) NOT NULL,
-    season VARCHAR(6) NOT NULL
+-- CREATE TABLE [Time] (
+--     time_key INT PRIMARY KEY, --surrogate key
+--     [time] DATE NOT NULL,
+--     day_of_week VARCHAR(9) NOT NULL,
+--     season VARCHAR(6) NOT NULL
+-- );
+CREATE TABLE Time
+	(	[time_key] INT primary key, 
+		[Date] DATETIME,
+		[FullDateUK] CHAR(10), -- Date in dd-MM-yyyy format
+		[DayOfMonth] VARCHAR(2), -- Field will hold day number of Month
+		[DayName] VARCHAR(9), -- Contains name of the day, Sunday, Monday 
+		[Month] VARCHAR(2), --Number of the Month 1 to 12
+		[MonthName] VARCHAR(9),--January, February etc
+		[Quarter] CHAR(1),
+		[QuarterName] VARCHAR(9),--First,Second..
+		[Year] CHAR(4),-- Year value of Date stored in Row
+		[IsWeekday] BIT,-- 0=Week End ,1=Week Day
+
+
 );
 GO
 
