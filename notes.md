@@ -1,5 +1,9 @@
 > For better viewing, install Markdown Preview Enchanced extension, **ctrl-shift-v** to preview.
 
+## Submission Requirements
+1. DW Warehouse Schema submit MSSQL DB Diagram
+
+
 ## Things to take note when doing ETL/designing warehouse.
 
 1. Realise that there are 8 products not in stock table
