@@ -9,3 +9,5 @@
 
 --Query 5
 
+use BikeSalesDWMinions
+select * from time

@@ -63,7 +63,7 @@ while @curDate < @EndDate
 
 	INSERT INTO [Time]
     select 
-	  CONVERT (char(8),@curDate,112) as time_key,
+	  CONVERT (char(8),@curDate,112) as time_key, -- 112 here is code for yy,mm,dd
 	  @CurDate AS Date,
 	  CONVERT (char(10), @CurDate,103) as FullDateUK,
 
@@ -96,6 +96,34 @@ while @curDate < @EndDate
 
 
 
--- Fact table join
+-- Fact table join not done yet
 
 
+use BikeSalesDWMinions
+
+DELETE FROM SalesFacts
+
+INSERT INTO BikeSalesDWMinions..SalesFacts(order_time_key,required_time_key,ship_time_key,
+  customer_key,staff_key,store_key,product_key,
+  order_status,order_id,order_quantity,list_price,discount)
+    SELECT 
+        replace(CONVERT(DATE,o.order_date, 103),'/',''),
+        replace(CONVERT(DATE,o.required_date, 103),'/',''),
+        replace(CONVERT(DATE,o.shipped_date, 103,'/',''),
+        c.customer_key,
+        s.staff_key,
+        st.store_key,
+        p.product_key,
+        o.order_status,
+        o.order_id,
+        o.order_quantity,
+        o.list_price,
+        o.discount
+    FROM
+    BikeSalesMinions..[order_items] as ot INNER JOIN BikeSalesMinions..[orders] as o
+    ON o.order_id = ot.order_id
+    INNER JOIN BikeSalesDWMinions..[store] st ON st.store_id = st.store_key
+    INNER JOIN BikeSalesDWMinions..[Customer] c ON o.CustomerID = c.customer_key
+    INNER JOIN BikeSalesDWMinions..[Staff] c ON o.StaffID = s.staff_keyKey
+    INNER JOIN BikeSalesDWMinions..[Customer] c ON o.CustomerID = c.CustomerKey
+    INNER JOIN BikeSalesDWMinions..[Product] p  ON o.ProductID = p.ProductKey
