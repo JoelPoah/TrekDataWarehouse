@@ -75,8 +75,7 @@ GO
 --     season VARCHAR(6) NOT NULL
 -- );
 CREATE TABLE Time
-	(	[time_key] INT IDENTITY(1,1) Primary Key,
-        [time_id] INT UNIQUE, 
+	(	[time_key] INT Primary Key,
 		[Date] DATETIME,
 		[FullDateUK] CHAR(10), -- Date in dd-MM-yyyy format
 		[DayOfMonth] VARCHAR(2), -- Field will hold day number of Month
@@ -92,20 +91,21 @@ CREATE TABLE Time
 
 );
 GO
-
+-- INSERT INTO [dbo].[TIME] VALUES(-1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+GO
 CREATE TABLE SalesFacts (
     customer_key varchar(10) NOT NULL FOREIGN KEY REFERENCES Customer(customer_id),
     staff_key varchar(5) NOT NULL FOREIGN KEY REFERENCES Staff(staff_id),
     store_key varchar(5) NOT NULL FOREIGN KEY REFERENCES Store(store_id),
     product_key varchar(10) NOT NULL FOREIGN KEY REFERENCES Product(product_id),
-    order_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_id),
-    required_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_id),
-    ship_time_key INT NOT NULL FOREIGN KEY REFERENCES [Time](time_id),
+    order_time_key INT UNIQUE FOREIGN KEY REFERENCES [Time](time_key),
+    required_time_key INT UNIQUE FOREIGN KEY REFERENCES [Time](time_key),
+    ship_time_key INT UNIQUE FOREIGN KEY REFERENCES [Time](time_key),
     order_status INT NOT NULL,
     order_id VARCHAR(10) NOT NULL,
     order_quantity INT NOT NULL,
     list_price DECIMAL(10, 2) NOT NULL,
     discount DECIMAL(4, 2) NOT NULL,
-    PRIMARY KEY (customer_key, staff_key, store_key, product_key, order_time_key, required_time_key, ship_time_key)
+    PRIMARY KEY (customer_key, staff_key, store_key, product_key)
 )
 

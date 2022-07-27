@@ -126,6 +126,8 @@ CREATE TABLE Sales.orders ( -- Table 7: orders
 );
 
 
+
+
 CREATE TABLE Sales.order_items( -- Table 8: order_items
     order_id VARCHAR(10),
     item_id INT,

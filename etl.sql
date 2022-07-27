@@ -63,7 +63,7 @@ while @curDate < @EndDate
 
 	INSERT INTO [Time]
     select 
-	  CONVERT (char(8),@curDate,112) as time_id, -- 112 here is code for yy,mm,dd
+	  CONVERT (char(8),@curDate,112) as time_key, -- 112 here is code for yy,mm,dd
 	  @CurDate AS Date,
 	  CONVERT (char(10), @CurDate,103) as FullDateUK,
 
@@ -107,9 +107,12 @@ INSERT INTO BikeSalesDWMinions..SalesFacts(order_time_key,required_time_key,ship
   customer_key,staff_key,store_key,product_key,
   order_status,order_id,order_quantity,list_price,discount)
     SELECT 
-        replace(CONVERT(DATE,o.order_date),'-',''),
-        replace(CONVERT(DATE,o.required_date),'-',''),
-        replace(CONVERT(DATE,o.shipped_date),'-',''),
+        CAST(format(o.order_date,'yyyyMMdd') as int),
+        CAST(format(o.required_date,'yyyyMMdd') as int),
+        CAST(format(o.shipped_date,'yyyyMMdd') as int),
+        -- PARSE(o.order_date AS date USING 'AR-LB'),
+        -- PARSE(o.required_date AS date USING 'AR-LB'),
+        -- PARSE(o.shipped_date AS date USING 'AR-LB'),
         c.customer_id,
         s.staff_id,
         st.store_id,

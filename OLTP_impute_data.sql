@@ -57,6 +57,21 @@ UPDATE sales.orders SET required_date = NULLIF(required_date,'NULL') -- changed 
 UPDATE sales.orders SET shipped_date = NULLIF(shipped_date,'NULL') -- changed NULL from string value to actual NULL value
 FROM sales.orders;
 GO
+UPDATE Sales.orders
+SET order_date = PARSE(order_date AS date USING 'AR-LB'),
+required_date = PARSE(required_date AS date USING 'AR-LB'),
+shipped_date = PARSE(shipped_date AS date USING 'AR-LB')
+
+ALTER TABLE Sales.orders
+ALTER COLUMN order_date DATE 
+
+ALTER TABLE Sales.orders
+ALTER COLUMN required_date DATE 
+
+ALTER TABLE Sales.orders
+ALTER COLUMN shipped_date DATE 
+
+
 GO
 
 -- products.json
