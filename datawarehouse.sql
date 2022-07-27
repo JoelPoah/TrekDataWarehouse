@@ -14,7 +14,7 @@ GO
 
 CREATE TABLE Customer (
     customer_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
-    customer_id VARCHAR(10) NOT NULL UNIQUE,
+    customer_id VARCHAR(10) NOT NULL ,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     phone VARCHAR(25),
@@ -29,7 +29,7 @@ GO
 
 CREATE TABLE Staff (
     staff_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
-    staff_id VARCHAR(5) NOT NULL UNIQUE,
+    staff_id VARCHAR(5) NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -42,7 +42,7 @@ GO
 
 CREATE TABLE Store (
     store_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
-    store_id VARCHAR(5) NOT NULL UNIQUE,
+    store_id VARCHAR(5) NOT NULL ,
     store_name VARCHAR(255) NOT NULL,
     phone VARCHAR(25),
     email VARCHAR(255),
@@ -56,7 +56,7 @@ GO
 
 CREATE TABLE Product (
     product_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
-    product_id VARCHAR(10) NOT NULL UNIQUE,
+    product_id VARCHAR(10) NOT NULL ,
     product_name VARCHAR(255) NOT NULL,
     brand_name VARCHAR(255) NOT NULL,  -- joined from oltp brands table
     category_name VARCHAR(255) NOT NULL, -- joined from oltp categories table
@@ -94,18 +94,18 @@ GO
 -- INSERT INTO [dbo].[TIME] VALUES(-1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 GO
 CREATE TABLE SalesFacts (
-    customer_key varchar(10) NOT NULL FOREIGN KEY REFERENCES Customer(customer_id),
-    staff_key varchar(5) NOT NULL FOREIGN KEY REFERENCES Staff(staff_id),
-    store_key varchar(5) NOT NULL FOREIGN KEY REFERENCES Store(store_id),
-    product_key varchar(10) NOT NULL FOREIGN KEY REFERENCES Product(product_id),
-    order_time_key INT UNIQUE FOREIGN KEY REFERENCES [Time](time_key),
-    required_time_key INT UNIQUE FOREIGN KEY REFERENCES [Time](time_key),
-    ship_time_key INT UNIQUE FOREIGN KEY REFERENCES [Time](time_key),
+    customer_key int NOT NULL FOREIGN KEY REFERENCES Customer(customer_key),
+    staff_key int NOT NULL FOREIGN KEY REFERENCES Staff(staff_key),
+    store_key int NOT NULL FOREIGN KEY REFERENCES Store(store_key),
+    product_key int NOT NULL FOREIGN KEY REFERENCES Product(product_key),
+    order_time_key INT  FOREIGN KEY REFERENCES [Time](time_key),
+    required_time_key INT FOREIGN KEY REFERENCES [Time](time_key),
+    ship_time_key INT FOREIGN KEY REFERENCES [Time](time_key),
     order_status INT NOT NULL,
     order_id VARCHAR(10) NOT NULL,
     order_quantity INT NOT NULL,
     list_price DECIMAL(10, 2) NOT NULL,
     discount DECIMAL(4, 2) NOT NULL,
-    PRIMARY KEY (customer_key, staff_key, store_key, product_key)
+    PRIMARY KEY (customer_key, staff_key, store_key, product_key,order_id)
 )
 

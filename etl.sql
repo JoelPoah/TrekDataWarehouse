@@ -96,27 +96,23 @@ while @curDate < @EndDate
 
 
 
--- Fact table join not done yet
-
+-- Fact table
 
 use BikeSalesDWMinions
 
 DELETE FROM SalesFacts
 
-INSERT INTO BikeSalesDWMinions..SalesFacts(order_time_key,required_time_key,ship_time_key,
-  customer_key,staff_key,store_key,product_key,
+INSERT INTO BikeSalesDWMinions..SalesFacts(customer_key,staff_key,store_key,
+product_key,order_time_key,required_time_key,ship_time_key,
   order_status,order_id,order_quantity,list_price,discount)
     SELECT 
-        CAST(format(o.order_date,'yyyyMMdd') as int),
-        CAST(format(o.required_date,'yyyyMMdd') as int),
-        CAST(format(o.shipped_date,'yyyyMMdd') as int),
-        -- PARSE(o.order_date AS date USING 'AR-LB'),
-        -- PARSE(o.required_date AS date USING 'AR-LB'),
-        -- PARSE(o.shipped_date AS date USING 'AR-LB'),
-        c.customer_id,
-        s.staff_id,
-        st.store_id,
-        p.product_id,
+        c.customer_key,
+        s.staff_key,
+        st.store_key,
+        p.product_key,
+        CAST(format(o.order_date,'yyyyMMdd') as int) as order_date_key,
+        CAST(format(o.required_date,'yyyyMMdd') as int) as required_date_key,
+        CAST(format(o.shipped_date,'yyyyMMdd') as int) as shipped_date_key,
         o.order_status,
         o.order_id,
         ot.quantity,
@@ -124,16 +120,13 @@ INSERT INTO BikeSalesDWMinions..SalesFacts(order_time_key,required_time_key,ship
         ot.discount
     FROM
     BikeSalesMinions.sales.[order_items] as ot INNER JOIN BikeSalesMinions.sales.[orders] as o
-    ON o.order_id = ot.order_id
-    INNER JOIN BikeSalesMinions.sales.[staffs] as s ON o.staff_id = s.staff_id
+    ON ot.order_id = o.order_id
+    INNER JOIN BikeSalesDWMinions..[Staff] as s ON o.staff_id = s.staff_id
     INNER JOIN BikeSalesDWMinions..[Store] st ON o.store_id = st.store_id
     INNER JOIN BikeSalesDWMinions..[Customer] c ON o.customer_id = c.customer_id
     INNER JOIN BikeSalesDWMinions..[Product] p  ON ot.product_id = p.product_id
 
--- use BikeSalesMinions
---  select replace(CONVERT(DATE,o.order_date),'-',''),
---         replace(CONVERT(DATE,o.required_date),'-',''),
---         replace(CONVERT(DATE,o.shipped_date),'-','') 
---         from sales.orders as o
 
--- select * from sales.orders
+
+use BikeSalesDWMinions
+select * from SalesFacts
