@@ -107,9 +107,9 @@ INSERT INTO BikeSalesDWMinions..SalesFacts(order_time_key,required_time_key,ship
   customer_key,staff_key,store_key,product_key,
   order_status,order_id,order_quantity,list_price,discount)
     SELECT 
-        replace(CONVERT(DATE,o.order_date, 103),'/',''),
-        replace(CONVERT(DATE,o.required_date, 103),'/',''),
-        replace(CONVERT(DATE,o.shipped_date, 103),'/',''),
+        replace(CONVERT(DATE,o.order_date),'-',''),
+        replace(CONVERT(DATE,o.required_date),'-',''),
+        replace(CONVERT(DATE,o.shipped_date),'-',''),
         c.customer_id,
         s.staff_id,
         st.store_id,
@@ -126,3 +126,11 @@ INSERT INTO BikeSalesDWMinions..SalesFacts(order_time_key,required_time_key,ship
     INNER JOIN BikeSalesDWMinions..[Store] st ON o.store_id = st.store_id
     INNER JOIN BikeSalesDWMinions..[Customer] c ON o.customer_id = c.customer_id
     INNER JOIN BikeSalesDWMinions..[Product] p  ON ot.product_id = p.product_id
+
+-- use BikeSalesMinions
+--  select replace(CONVERT(DATE,o.order_date),'-',''),
+--         replace(CONVERT(DATE,o.required_date),'-',''),
+--         replace(CONVERT(DATE,o.shipped_date),'-','') 
+--         from sales.orders as o
+
+-- select * from sales.orders

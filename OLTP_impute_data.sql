@@ -52,6 +52,11 @@ GO
 BULK INSERT sales.orders    
 FROM 'C:\deng_ca2_data\Orders.csv'
 WITH (FIRSTROW = 2,fieldterminator=',', rowterminator='\n')
+UPDATE sales.orders SET order_date = NULLIF(order_date,'NULL') -- changed NULL from string value to actual NULL value
+UPDATE sales.orders SET required_date = NULLIF(required_date,'NULL') -- changed NULL from string value to actual NULL value
+UPDATE sales.orders SET shipped_date = NULLIF(shipped_date,'NULL') -- changed NULL from string value to actual NULL value
+FROM sales.orders;
+GO
 GO
 
 -- products.json

@@ -76,7 +76,7 @@ GO
 -- );
 CREATE TABLE Time
 	(	[time_key] INT IDENTITY(1,1) Primary Key,
-        [time_id] INT NOT NULL UNIQUE, 
+        [time_id] INT UNIQUE, 
 		[Date] DATETIME,
 		[FullDateUK] CHAR(10), -- Date in dd-MM-yyyy format
 		[DayOfMonth] VARCHAR(2), -- Field will hold day number of Month

@@ -105,9 +105,9 @@ CREATE TABLE Sales.orders ( -- Table 7: orders
     order_status INT NOT NULL,
     -- Order status: 1 = Pending; 2 = Processing; 3 = Rejected; 4 = Completed
     -- dates will be in string, will be converted to date dtype during ETL
-    order_date CHAR(10) NOT NULL,
-    required_date CHAR(10) NOT NULL,
-    shipped_date CHAR(10),
+    order_date VARCHAR(10) NOT NULL,
+    required_date VARCHAR(10) NOT NULL,
+    shipped_date VARCHAR(10),
     -- Inconsistent datatype, changed INT to VARCHAR(5) for store_id and staff_id
     store_id VARCHAR(5) NOT NULL,
     staff_id VARCHAR(5) NOT NULL,
