@@ -3,18 +3,18 @@ USE BikeSalesMinions
 GO
 
 
--- Product Dimension working query (have not added insert into dw)
+-- Product Dimension
 INSERT INTO BikeSalesDWMinions..Product
 SELECT p.product_id, p.product_name, p.brand_id, p.category_id, p.model_year, 
-ISNULL(s.[Stock Quantity], 0) 'Stock Quantity',
- CAST(GETDATE() AS Date) 'Stock Take Date'
+  ISNULL(s.[Stock Quantity], 0) 'Stock Quantity', -- NULL values will be 0
+  CAST(GETDATE() AS Date) 'Stock Take Date'
 FROM Production.products AS p
-LEFT JOIN (
+LEFT JOIN ( -- Left join so that products that are not recorded in stock table is shown as NULL
 	SELECT product_id, SUM(quantity) 'Stock Quantity' FROM Production.stocks
 	GROUP BY product_id
 ) AS s ON p.product_id = s.product_id
-INNER JOIN Production.brands b ON p.brand_id = b.brand_id
-INNER JOIN Production.categories c ON p.category_id = c.category_id
+INNER JOIN Production.brands b ON p.brand_id = b.brand_id -- get brand name
+INNER JOIN Production.categories c ON p.category_id = c.category_id -- get category name
 GO
 
 
@@ -128,5 +128,8 @@ product_key,order_time_key,required_time_key,ship_time_key,
 
 
 
+
+-- check count of NULL ship dates, should return 508 as there are 508 orders with NULL ship dates in the OLTP database
 use BikeSalesDWMinions
-select * from SalesFacts
+select COUNT(*) 'Null ship dates' from SalesFacts
+where ship_time_key is NULL
