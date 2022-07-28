@@ -96,8 +96,7 @@ while @curDate < @EndDate
 
 
 
--- Fact table
-
+-- Fact table (should have 4722 rows)
 use BikeSalesDWMinions
 
 DELETE FROM SalesFacts
@@ -127,6 +126,10 @@ product_key,order_time_key,required_time_key,ship_time_key,
     INNER JOIN BikeSalesDWMinions..[Product] p  ON ot.product_id = p.product_id
 
 
+
+-- check the number of rows in the fact table (4722)
+use BikeSalesDWMinions
+select COUNT(*) "Row count" from SalesFacts
 
 
 -- check count of NULL ship dates, should return 508 as there are 508 orders with NULL ship dates in the OLTP database

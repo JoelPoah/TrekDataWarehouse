@@ -80,7 +80,7 @@ CREATE TABLE Time
 		[FullDateUK] CHAR(10), -- Date in dd-MM-yyyy format
 		[DayOfMonth] VARCHAR(2), -- Field will hold day number of Month
 		[DayName] VARCHAR(9), -- Contains name of the day, Sunday, Monday 
-		[Month] VARCHAR(2), --Number of the Month 1 to 12
+		[Month] INT, --Number of the Month 1 to 12
 		[MonthName] VARCHAR(9),--January, February etc
 		[Quarter] CHAR(1),
 		[QuarterName] VARCHAR(9),--First,Second..
