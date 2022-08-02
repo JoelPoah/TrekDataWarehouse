@@ -77,7 +77,7 @@ GO
 CREATE TABLE Time
 	(	[time_key] INT Primary Key,
 		[Date] DATETIME,
-		[FullDateUK] CHAR(10), -- Date in dd-MM-yyyy format
+		[FullDateUK] DATE, -- Date in dd-MM-yyyy format
 		[DayOfMonth] VARCHAR(2), -- Field will hold day number of Month
 		[DayName] VARCHAR(9), -- Contains name of the day, Sunday, Monday 
 		[Month] INT, --Number of the Month 1 to 12

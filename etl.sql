@@ -65,7 +65,7 @@ while @curDate < @EndDate
     select 
 	  CONVERT (char(8),@curDate,112) as time_key, -- 112 here is code for yy,mm,dd
 	  @CurDate AS Date,
-	  CONVERT (char(10), @CurDate,103) as FullDateUK,
+	  CONVERT (DATE, @CurDate,103) as FullDateUK,
 
 	  DATEPART(Day, @curDate) AS DayOfMonth,
 	  DATENAME(WeekDay, @curDate) AS DayName,
