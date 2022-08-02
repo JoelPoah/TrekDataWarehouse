@@ -5,31 +5,49 @@ insights so that final query to present can be selected
 use BikeSalesDWMinions
 select * from SalesFacts
 
--- Query 1
+-- Query 1 Sales/Profits/Discounts/revenue
 
 --Select Top 100 Best products based on revenue and average discount also must 
 -- take note of order_status not equal 3
-select top 100 p.product_name, sum(sf.order_quantity*sf.list_price) as revenue,
-MAX(sf.discount) as discount
-from BikeSalesDWMinions..SalesFacts as sf 
-INNER JOIN BikeSalesDWMinions..[Product] as p ON sf.product_key = p.product_key
-group by p.product_name
-order by revenue desc 
-
-
-select top 100 p.product_name , sum(sf.order_quantity*sf.list_price) as revenue,
-AVG(sf.discount) as Averagediscount, a.WorstProduct as WorstProducts, a.worstdiscount
-from BikeSalesDWMinions..SalesFacts as sf , BikeSalesDWMinions..Product as p,
-(select top 100 p.product_name as WorstProduct, sum(sf.order_quantity*sf.list_price) as revenue,
-AVG(sf.discount) as worstdiscount
+select top 100 p.product_name as worst, sum(sf.order_quantity*sf.list_price) as revenue,
+AVG(sf.discount) as discount
 from BikeSalesDWMinions..SalesFacts as sf 
 INNER JOIN BikeSalesDWMinions..[Product] as p ON sf.product_key = p.product_key
 group by p.product_name
 order by revenue asc
-) as a
-WHERE sf.product_key=p.product_key
-group by p.product_name , a.WorstProduct,a.worstdiscount
+
+
+-- select product , average revenue using rank() over partition by month 
+select p.product_name as product,month(shipped.FullDateUK) as MonthOfYear, avg(sf.order_quantity*sf.list_price) as revenue,
+AVG(discount) as discount,
+rank() over (partition by month(shipped.fullDateUK) order by avg(sf.order_quantity*sf.list_price) desc) as rank
+from BikeSalesDWMinions..SalesFacts as sf
+INNER JOIN BikeSalesDWMinions..[Product] as p ON sf.product_key = p.product_key
+INNER JOIN BikeSalesDWMinions..[Time] as shipped ON sf.ship_time_key = shipped.time_key
+group by p.product_name, month(shipped.fullDateUK)
 order by revenue desc
+
+
+
+
+
+
+
+
+
+-- select top 100 p.product_name , sum(sf.order_quantity*sf.list_price) as revenue,
+-- AVG(sf.discount) as Averagediscount, a.WorstProduct as WorstProducts, a.worstdiscount
+-- from BikeSalesDWMinions..SalesFacts as sf , BikeSalesDWMinions..Product as p,
+-- (select top 100 p.product_name as WorstProduct, sum(sf.order_quantity*sf.list_price) as revenue,
+-- AVG(sf.discount) as worstdiscount
+-- from BikeSalesDWMinions..SalesFacts as sf 
+-- INNER JOIN BikeSalesDWMinions..[Product] as p ON sf.product_key = p.product_key
+-- group by p.product_name
+-- order by revenue asc
+-- ) as a
+-- WHERE sf.product_key=p.product_key
+-- group by p.product_name , a.WorstProduct,a.worstdiscount
+-- order by revenue desc
 
 
 -- Query 2
@@ -37,6 +55,7 @@ order by revenue desc
 
 -- Query 3 (Sales/Seasons of Sales/Time)
 -- top 3 best selling categories per quarter
+use BikeSalesDWMinions
 select * from (
 	select 
 		p.category_name,
@@ -68,7 +87,7 @@ from SalesFacts as sf,time as shipped,time as required,
 time as ordered,customer as c 
 where sf.order_time_key = ordered.time_key and required.time_key = sf.required_time_key and
 sf.ship_time_key = shipped.time_key and c.customer_key = sf.customer_key
-and sf.order_status = 4
+and sf.order_status = 4	
 GROUP BY c.state,c.city
 ORDER BY DayTaken desc
 /**
