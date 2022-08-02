@@ -5,7 +5,7 @@ GO
 
 -- Product Dimension
 INSERT INTO BikeSalesDWMinions..Product
-SELECT p.product_id, p.product_name, p.brand_id, p.category_id, p.model_year, 
+SELECT p.product_id, p.product_name, p.brand_id, p.category_id, b.brand_name, c.category_name, p.model_year, 
   ISNULL(s.[Stock Quantity], 0) 'Stock Quantity', -- NULL values will be 0
   CAST(GETDATE() AS Date) 'Stock Take Date'
 FROM Production.products AS p
@@ -126,13 +126,14 @@ product_key,order_time_key,required_time_key,ship_time_key,
     INNER JOIN BikeSalesDWMinions..[Product] p  ON ot.product_id = p.product_id
 
 
-
+/*
 -- check the number of rows in the fact table (4722)
 use BikeSalesDWMinions
 select COUNT(*) "Row count" from SalesFacts
 
 
--- check count of NULL ship dates, should return 508 as there are 508 orders with NULL ship dates in the OLTP database
+-- check count of NULL ship dates, should return 508 as there are 508 orders with NULL shipping dates in the OLTP database
 use BikeSalesDWMinions
 select COUNT(*) 'Null ship dates' from SalesFacts
 where ship_time_key is NULL
+*/

@@ -32,3 +32,41 @@ select * from Sales.orders
     INNER JOIN BikeSalesDWMinions..[Store] st ON o.store_id = st.store_id
     INNER JOIN BikeSalesDWMinions..[Customer] c ON o.customer_id = c.customer_id
     INNER JOIN BikeSalesDWMinions..[Product] p  ON ot.product_id = p.product_id
+
+
+
+select distinct t.[Quarter], p.category_name,
+	RANK() OVER 
+		SUM(f.list_price * f.order_quantity * f.discount) OVER(PARTITION BY p.category_name, t.quarter) AS revenue
+from SalesFacts f
+inner join time t on f.order_time_key = t.time_key
+inner join product p on f.product_key = p.product_key
+order by t.quarter asc, revenue desc
+
+
+select p.category_name, (f.list_price * f.order_quantity * (1-f.discount)),
+	RANK() OVER
+		(PARTITION BY p.category_id ORDER BY (f.list_price * f.order_quantity * (1-f.discount)) DESC) AS [rank]
+from SalesFacts f
+inner join time t on f.order_time_key = t.time_key
+inner join product p on f.product_key = p.product_key
+
+
+select p.category_name, t.Quarter,
+	SUM(f.list_price * f.order_quantity * f.discount) AS revenue
+from SalesFacts f
+inner join time t on f.order_time_key = t.time_key
+inner join product p on f.product_key = p.product_key
+group by p.category_name, t.Quarter
+order by t.quarter asc, revenue desc
+
+
+
+
+select * from salesfacts
+
+select * from time
+
+select * from Product
+
+select * from staff

@@ -58,6 +58,8 @@ CREATE TABLE Product (
     product_key INT IDENTITY(1,1) PRIMARY KEY, --surrogate key
     product_id VARCHAR(10) NOT NULL ,
     product_name VARCHAR(255) NOT NULL,
+    brand_id VARCHAR(5) NOT NULL,
+    category_id VARCHAR(5) NOT NULL,
     brand_name VARCHAR(255) NOT NULL,  -- joined from oltp brands table
     category_name VARCHAR(255) NOT NULL, -- joined from oltp categories table
     model_year INT NOT NULL,
