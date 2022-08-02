@@ -42,6 +42,14 @@ select t.[Quarter] , SUM(f.list_price * f.order_quantity * f.discount) 'revenue'
 inner join time t on f.order_time_key = t.time_key
 group by t.[Quarter] order by t.[Quarter]
 
+select p.category_name, t.Quarter,
+	SUM(f.list_price * f.order_quantity * f.discount) AS revenue
+from SalesFacts f
+inner join time t on f.order_time_key = t.time_key
+inner join product p on f.product_key = p.product_key
+group by p.category_name, t.Quarter
+order by t.quarter
+
 
 
 
