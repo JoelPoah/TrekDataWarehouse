@@ -36,7 +36,7 @@ CREATE TABLE Staff (
     phone VARCHAR(25),
     active INT NOT NULL,
     store_id VARCHAR(5) NOT NULL,
-  
+    manager_id VARCHAR(5),
 );
 GO
 

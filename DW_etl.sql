@@ -21,7 +21,7 @@ GO
 -- Staff Dimension
 INSERT INTO BikeSalesDWMinions..Staff
 SELECT s.staff_id, s.first_name, s.last_name, 
-    s.email, s.phone, s.active, s.store_id
+    s.email, s.phone, s.active, s.store_id, manager_id
 FROM Sales.staffs AS s;
 GO
 
