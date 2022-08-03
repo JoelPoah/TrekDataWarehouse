@@ -14,7 +14,7 @@ select * from (
 ) t
 where t.[rank] <= 3
 
-
+use BikeSalesDWMinions
 -- Sales of each bike category per quarter
 DROP VIEW IF EXISTS [pivoted_table];
 GO
