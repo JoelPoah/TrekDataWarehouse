@@ -13,11 +13,11 @@
 -- would probably need to keep track of stock for each store
 
 select s.store_id, sf. order_id, p.product_name, (p.quantity - sf.order_quantity) as 'current_stock' 
-from SalesFacts as sf, Product as p, Store as s
-where order_status = 4
-and p.product_key = sf.product_key
-and sf.store_key = s.store_key
-group by s.store_id, sf. order_id, p.product_name, (p.quantity - sf.order_quantity);
+from SalesFacts as sf
+inner join Product as p on sf.product_key = p.product_key
+inner join Store as s on sf.store_key = s.store_key
+where sf.order_status = 4
+group by s.store_id, sf.order_id, p.product_name, (p.quantity - sf.order_quantity);
 
 select * from SalesFacts;
 
