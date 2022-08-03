@@ -11,13 +11,20 @@
 -- OR deduct the quantities ordered iff an order is completed, as products would be sent to customers
 
 -- would probably need to keep track of stock for each store
+-- but it is not explicitly stated which products belong in which stores
 
-select s.store_id, sf. order_id, p.product_name, (p.quantity - sf.order_quantity) as 'current_stock' 
+select p.product_name, SUM(sf.order_quantity) as 'total_order_qty'
 from SalesFacts as sf
 inner join Product as p on sf.product_key = p.product_key
-inner join Store as s on sf.store_key = s.store_key
 where sf.order_status = 4
-group by s.store_id, sf.order_id, p.product_name, (p.quantity - sf.order_quantity);
+group by p.product_name;
+
+-- cannot get difference between product quantity and total order quantity for each item
+select p.product_name, (p.quantity - SUM(sf.order_quantity)) as 'current_stock'
+from SalesFacts as sf
+inner join Product as p on sf.product_key = p.product_key
+group by p.product_name;
+
 
 select * from SalesFacts;
 
