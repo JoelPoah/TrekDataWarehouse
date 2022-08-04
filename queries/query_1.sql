@@ -9,6 +9,7 @@ Revenue: column wise used to calculate (list_price*quantity)*(1-discount)
 use BikeSalesDWMinions
 SELECT * FROM(
 select p.product_name, SUM((sf.list_price*sf.order_quantity)*(1-sf.discount)) as revenue,
+SUM((sf.list_price*sf.order_quantity)*sf.discount) as TotalDiscounted, -- shows total amount of money rebated
     concat(past3month.MonthName,' ',past3month.Year) as ShippedDate, -- Show Month and Year in a single column
     RANK() OVER (PARTITION BY concat(past3month.MonthName,' ',past3month.Year) ORDER BY SUM((sf.list_price*sf.order_quantity)*(1-sf.discount)) DESC) as rank
     -- Partition by Month and Year Column , Rank them by Highest Revenue 
