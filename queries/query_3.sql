@@ -1,5 +1,59 @@
 -- Query 3 (Sales/Seasons of Sales/Time)
 
+
+-- pivoted percentage change query
+SELECT [Quarter], [Mountain Bikes], [Road Bikes], [Cruisers Bicycles], [Electric Bikes], [Cyclocross Bicycles], [Comfort Bicycles], [Children Bicycles]
+FROM (
+	SELECT [Quarter], category_name,
+		(([avg revenue per quarter] - lag1_Revenue) / [avg revenue per quarter]) * 100 'pct diff'
+	FROM (
+		select
+			t.Quarter,
+			p.category_name,
+			SUM(f.list_price * f.order_quantity * (1-f.discount)) / COUNT(DISTINCT YEAR(FullDateUK)) 'avg revenue per quarter',
+			LAG(SUM(f.list_price * f.order_quantity * (1-f.discount)) / COUNT(DISTINCT YEAR(FullDateUK)), 1, 0) OVER (PARTITION BY [category_name] ORDER BY [Quarter] ASC) 'lag1_Revenue'
+		from SalesFacts f
+		inner join time t on f.ship_time_key = t.time_key
+		inner join product p on f.product_key = p.product_key
+		where YEAR(t.FullDateUK) IN ('2016','2017')
+		group by t.Quarter, p.category_name
+	) as p
+) AS quarterly_revenue
+PIVOT (max([pct diff]) FOR [category_name] IN ([Mountain Bikes], [Road Bikes], [Cruisers Bicycles], [Electric Bikes], [Cyclocross Bicycles], [Comfort Bicycles], [Children Bicycles]))
+AS pivoted_table
+
+
+-- added percentage change to lagged query
+SELECT *,
+	(([avg revenue per quarter] - lag1_Revenue) / [avg revenue per quarter]) * 100 'pct diff'
+FROM (
+	select
+		t.Quarter,
+		p.category_name,
+		SUM(f.list_price * f.order_quantity * (1-f.discount)) / COUNT(DISTINCT YEAR(FullDateUK)) 'avg revenue per quarter',
+		LAG(SUM(f.list_price * f.order_quantity * (1-f.discount)) / COUNT(DISTINCT YEAR(FullDateUK)), 1, 0) OVER (PARTITION BY [category_name] ORDER BY [Quarter] ASC) 'lag1_Revenue'
+	from SalesFacts f
+	inner join time t on f.ship_time_key = t.time_key
+	inner join product p on f.product_key = p.product_key
+	where YEAR(t.FullDateUK) IN ('2016','2017')
+	group by t.Quarter, p.category_name
+) as p
+
+
+-- made lag query more efficient
+select 
+	t.Quarter,
+	p.category_name,
+	SUM(f.list_price * f.order_quantity * (1-f.discount)) / COUNT(DISTINCT YEAR(FullDateUK)) 'avg revenue per quarter',
+	LAG(SUM(f.list_price * f.order_quantity * (1-f.discount)) / COUNT(DISTINCT YEAR(FullDateUK)), 1, 0) OVER (PARTITION BY [category_name] ORDER BY [Quarter] ASC) 'PrevSales'
+from SalesFacts f
+inner join time t on f.ship_time_key = t.time_key
+inner join product p on f.product_key = p.product_key
+where YEAR(t.FullDateUK) IN ('2016','2017')
+group by t.Quarter, p.category_name
+
+
+
 -- new pivot query
 SELECT [Quarter], [Mountain Bikes], [Road Bikes], [Cruisers Bicycles], [Electric Bikes], [Cyclocross Bicycles], [Comfort Bicycles], [Children Bicycles]
 FROM (
