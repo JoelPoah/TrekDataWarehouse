@@ -5,9 +5,10 @@ delivering the bicycle(shipped_date - required_date) to various customers
  got problem and should do something about the delivery in that particular city 
  **/
 use BikeSalesDWMinions
-select count(sf.order_id) as CountOfSales,c.state,c.city,SUM(order_quantity*list_price*(1-discount)) as totalrevenue,
-AVG(DATEDIFF(Day,ordered.FullDateUK,shipped.FullDateUK)) as 'DayTaken' 
-,AVG(DATEDIFF(DAY,required.FullDateUK,shipped.FullDateUK)) as 'DayLate'
+select TOP 10 count(sf.order_id) as CountOfSales, -- show amount of transactions in that city
+c.state,c.city,SUM(order_quantity*list_price*(1-discount)) as totalrevenue, --Show revenue
+AVG(DATEDIFF(Day,ordered.FullDateUK,shipped.FullDateUK)) as 'DayTaken' --total amount of days from order to shipped
+,AVG(DATEDIFF(DAY,required.FullDateUK,shipped.FullDateUK)) as 'DayLate'-- calculate how many days late the transactions was on average
 from SalesFacts as sf,time as shipped,time as required,
 time as ordered,customer as c 
 where sf.order_time_key = ordered.time_key and required.time_key = sf.required_time_key and
