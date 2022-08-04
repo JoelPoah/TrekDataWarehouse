@@ -13,6 +13,10 @@
 -- would probably need to keep track of stock for each store
 -- but it is not explicitly stated which products belong in which stores
 
+
+-- Tim's solution: Get current stock quantities for each product by getting the difference 
+-- between stock quantity at the most recent stock date and orders placed since that date.
+-- Orders that are completed (with an order status of 4) will be used to deduct from the current stock quantity.
 select 
    p.product_name, p.quantity as 'stock_qty', 
    o.total_order_qty ,
