@@ -1,4 +1,5 @@
--- Query 2
+-- Query 2 (Sales/Staff/stores)
+--
 use BikeSalesDWMinions
 
 select 
