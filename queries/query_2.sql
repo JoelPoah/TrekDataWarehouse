@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 -- Query 2 Sales/Staff/stores
+=======
+-- Query 2 (Sales/Staff/stores)
+--
+>>>>>>> cf0b39c1ecea54e6c269ea9e4e1ef097031252fb
 use BikeSalesDWMinions
 
 select 
