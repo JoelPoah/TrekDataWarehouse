@@ -35,8 +35,8 @@ select p.product_name, SUM((sf.list_price*sf.order_quantity)*(1-sf.discount)) as
             time as latest
         where sf.ship_time_key = latest.time_key
         order by latest.FullDateUK desc)    
-    group by past3month.month,concat(past3month.MonthName,' ',past3month.Year),p.product_name
-    order by past3month.month desc,revenue desc offset 0 rows -- offset 0 means to not leave out any transactions in past 3 months
+    group by concat(past3month.MonthName,' ',past3month.Year),p.product_name
+    order by ShippedDate desc,revenue desc offset 0 rows -- offset 0 means to not leave out any transactions in past 3 months
 ) as test
 where test.rank <=5 -- Only consider the past 5 products in each month
 
