@@ -56,8 +56,8 @@ and attempt to predict the date at which the owner should restock the**/
 use BikeSalesDWMinions
 GO
 
-select p.product_name, 
-	CAST(sum(sf.order_quantity) AS FLOAT) as totalsold,
+select TOP 15 p.product_name, 
+	sum(sf.order_quantity) as totalsold,
 	avg(p.quantity) as totalcount,
 	DATEADD(
 		month, avg(p.quantity)/sum(sf.order_quantity),
@@ -68,7 +68,6 @@ select p.product_name,
 			order by latest.FullDateUK desc
 		)
 	) as 'RestockBy'
-
 	from salesfacts as sf, product as p, time as pastweek
 	where p.product_key = sf.product_key and sf.order_status = 4
 	and pastweek.time_key = sf.ship_time_key
@@ -80,7 +79,7 @@ select p.product_name,
 	order by latest.FullDateUK desc)
 ))
 group by p.product_name
-order by totalsold desc,totalcount asc
+order by RestockBy asc
 
 
 
