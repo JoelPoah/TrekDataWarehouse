@@ -38,6 +38,38 @@ select p.product_name, SUM((sf.list_price*sf.order_quantity)*(1-sf.discount)) as
 where test.rank <=5
 
 
+-- use BikeSalesDWMinions
+-- SELECT * FROM(
+-- select p.product_name, SUM((sf.list_price*sf.order_quantity)*(1-sf.discount)) as revenue,
+--     concat(past3month.MonthName,' ',past3month.Year) as ShippedDate,
+--     lag(sf.discount) OVER (PARTITION BY concat(past3month.MonthName,' ',past3month.Year) ORDER BY SUM((sf.list_price*sf.order_quantity)*(1-sf.discount)) DESC) as discountchange
+--     from SalesFacts as sf,
+--         product as p, time as past3month
+--     where p.product_key = sf.product_key and sf.order_status=4
+--         and past3month.time_key = sf.ship_time_key
+--         and past3month.fullDateUK >=
+--         (DATEADD(
+--             MONTH,-3,(Select Top 1
+--             latest.FullDateUK
+--         from salesfacts as sf ,
+--             time as latest
+--         where sf.ship_time_key = latest.time_key
+--         order by latest.FullDateUK desc)
+--         ))
+--         AND 
+--         month(past3month.fullDateUK) <
+--         (Select Top 1
+--             month(latest.FullDateUK)
+--         from salesfacts as sf ,
+--             time as latest
+--         where sf.ship_time_key = latest.time_key
+--         order by latest.FullDateUK desc)    
+--     group by past3month.month,concat(past3month.MonthName,' ',past3month.Year),p.product_name,sf.discount
+--     order by past3month.month desc,revenue desc offset 0 rows
+-- ) as test
+-- where test.discountchange <=5
+
+
 
 
 /**
