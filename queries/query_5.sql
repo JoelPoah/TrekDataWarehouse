@@ -65,18 +65,19 @@ select TOP 15 p.product_name,
 			Select Top 1 latest.FullDateUK from salesfacts as sf ,
 			time as latest
 			where sf.ship_time_key = latest.time_key
-			order by latest.FullDateUK desc
+			order by latest.FullDateUK desc 
 		)
-	) as 'RestockBy'
+	) as 'RestockBy' -- Predicts Restock date for fast selling product
 	from salesfacts as sf, product as p, time as pastweek
 	where p.product_key = sf.product_key and sf.order_status = 4
 	and pastweek.time_key = sf.ship_time_key
-	and pastweek.fullDateUK>=(DATEADD(week,-4,(Select Top 1
+	and pastweek.fullDateUK>=(DATEADD(week,-4,
+	(Select Top 1
 	latest.FullDateUK
 	from salesfacts as sf ,
 	time as latest
 	where sf.ship_time_key = latest.time_key
-	order by latest.FullDateUK desc)
+	order by latest.FullDateUK desc) -- Selects Latest date
 ))
 group by p.product_name
 order by RestockBy asc
