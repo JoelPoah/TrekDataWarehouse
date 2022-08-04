@@ -1,5 +1,23 @@
 -- Query 3 (Sales/Seasons of Sales/Time)
 
+-- new pivot query
+SELECT [Quarter], [Mountain Bikes], [Road Bikes], [Cruisers Bicycles], [Electric Bikes], [Cyclocross Bicycles], [Comfort Bicycles], [Children Bicycles]
+FROM (
+	select 
+		t.Quarter,
+		p.category_name,
+		SUM(f.list_price * f.order_quantity * (1-f.discount)) / COUNT(DISTINCT YEAR(FullDateUK)) 'avg revenue per quarter'
+	from SalesFacts f
+	inner join time t on f.ship_time_key = t.time_key
+	inner join product p on f.product_key = p.product_key
+	where t.FullDateUK <= '2017-12-31'
+	group by t.Quarter, p.category_name
+) 
+AS quarterly_revenue
+PIVOT (max([avg revenue per quarter]) FOR [category_name] IN ([Mountain Bikes], [Road Bikes], [Cruisers Bicycles], [Electric Bikes], [Cyclocross Bicycles], [Comfort Bicycles], [Children Bicycles]))
+AS pivoted_table
+
+
 -- top 3 best selling categories per quarter
 select * from (
 	select 
