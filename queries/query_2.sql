@@ -18,7 +18,7 @@ select
 		partition by s.store_id 
 		order by isnull(round(sum(sf.order_quantity * sf.list_price * (1-sf.discount)), 2), 0) desc) as 'rank'
 from SalesFacts as sf
-full outer join staff s on sf.staff_key = s.staff_key
+inner join staff s on sf.staff_key = s.staff_key
 inner join Time t on sf.ship_time_key = t.time_key
 where sf.order_status != 3
 and year(t.FullDateUK) in ('2016', '2017')
