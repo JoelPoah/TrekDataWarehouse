@@ -12,18 +12,21 @@
 
 -- would probably need to keep track of stock for each store
 -- but it is not explicitly stated which products belong in which stores
-use BikeSalesDWMinions
-select p.product_name, SUM(sf.order_quantity) as 'total_order_qty'
-from SalesFacts as sf
-inner join Product as p on sf.product_key = p.product_key
-where sf.order_status = 4
-group by p.product_name;
 
--- cannot get difference between product quantity and total order quantity for each item
-select p.product_name, (p.quantity - SUM(sf.order_quantity)) as 'current_stock'
-from SalesFacts as sf
-inner join Product as p on sf.product_key = p.product_key
-group by sf.order_id, p.product_name,p.quantity;
+select 
+   p.product_name, p.quantity as 'stock_qty', 
+   o.total_order_qty ,
+   (p.quantity - o.total_order_qty) as 'current_stock'
+from Product as p
+right outer join (
+	select p.product_name, sum(sf.order_quantity) as 'total_order_qty'
+	from SalesFacts as sf 
+	inner join Product as p 
+	on sf.product_key = p.product_key
+	where sf.order_status = 4
+	group by p.product_name
+) as o 
+on o.product_name = p.product_name;
 
 -- Get rate of stock change in past week for each product , state brand and category 
 
