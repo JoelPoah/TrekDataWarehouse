@@ -54,23 +54,30 @@ Order by the earliest product which is running out
 /**Cons: this query can only show products that were sold in the past month
 and attempt to predict the date at which the owner should restock the**/
 use BikeSalesDWMinions
-select p.product_name,CAST(sum(sf.order_quantity) AS FLOAT) as totalsold,
-avg(p.quantity) as totalcount,DATEADD(month,avg(p.quantity)/sum(sf.order_quantity),
-(Select Top 1
-latest.FullDateUK
-from salesfacts as sf ,
-time as latest
-where sf.ship_time_key = latest.time_key
-order by latest.FullDateUK desc)) as 'RestockBy'
-from salesfacts as sf ,product as p,time as pastweek
-where p.product_key = sf.product_key and sf.order_status =4
-and pastweek.time_key = sf.ship_time_key
-and pastweek.fullDateUK>=(DATEADD(week,-4,(Select Top 1
-latest.FullDateUK
-from salesfacts as sf ,
-time as latest
-where sf.ship_time_key = latest.time_key
-order by latest.FullDateUK desc)
+GO
+
+select p.product_name, 
+	CAST(sum(sf.order_quantity) AS FLOAT) as totalsold,
+	avg(p.quantity) as totalcount,
+	DATEADD(
+		month, avg(p.quantity)/sum(sf.order_quantity),
+		(
+			Select Top 1 latest.FullDateUK from salesfacts as sf ,
+			time as latest
+			where sf.ship_time_key = latest.time_key
+			order by latest.FullDateUK desc
+		)
+	) as 'RestockBy'
+
+	from salesfacts as sf, product as p, time as pastweek
+	where p.product_key = sf.product_key and sf.order_status = 4
+	and pastweek.time_key = sf.ship_time_key
+	and pastweek.fullDateUK>=(DATEADD(week,-4,(Select Top 1
+	latest.FullDateUK
+	from salesfacts as sf ,
+	time as latest
+	where sf.ship_time_key = latest.time_key
+	order by latest.FullDateUK desc)
 ))
 group by p.product_name
 order by totalsold desc,totalcount asc

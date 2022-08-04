@@ -1,5 +1,6 @@
 -- Query 3 (Sales/Seasons of Sales/Time)
-
+USE BikeSalesDWMinions
+GO
 
 -- pivoted percentage change query
 SELECT [Quarter], [Mountain Bikes], [Road Bikes], [Cruisers Bicycles], [Electric Bikes], [Cyclocross Bicycles], [Comfort Bicycles], [Children Bicycles]
