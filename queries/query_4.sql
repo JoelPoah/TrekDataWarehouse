@@ -1,4 +1,21 @@
 -- Query 4 Sales/Orders/Customers
+
+use BikeSalesDWMinions
+select top 10
+    count(sf.order_id) as CountOfSales, c.state, c.city,
+    SUM(order_quantity*list_price*(1-discount)) as totalrevenue,
+	AVG(DATEDIFF(Day, ordered.FullDateUK, shipped.FullDateUK)) as 'DayTaken', --total amount of days from order to shipped
+    AVG(DATEDIFF(DAY, req.FullDateUK, shipped.FullDateUK)) as 'DayLate'
+from SalesFacts sf
+inner join [Time] ordered on sf.order_time_key = ordered.time_key
+inner join [Time] req on sf.required_time_key = req.time_key
+inner join [Time] shipped on sf.ship_time_key = shipped.time_key 
+inner join Customer c on sf.customer_key = c.customer_key
+WHERE sf.order_status=4
+GROUP BY c.state,c.city
+ORDER BY 'DayLate' DESC, totalrevenue asc
+
+
 /**Efficiency of company; find mean/median time taken in 
 delivering the bicycle(shipped_date - required_date) to various customers 
 (group by city in which they are in) if they are always late in delivery means
@@ -9,8 +26,8 @@ select TOP 10 count(sf.order_id) as CountOfSales, -- show amount of transactions
 c.state,c.city,SUM(order_quantity*list_price*(1-discount)) as totalrevenue, --Show revenue
 AVG(DATEDIFF(Day,ordered.FullDateUK,shipped.FullDateUK)) as 'DayTaken' --total amount of days from order to shipped
 ,AVG(DATEDIFF(DAY,required.FullDateUK,shipped.FullDateUK)) as 'DayLate'-- calculate how many days late the transactions was on average
-from SalesFacts as sf,time as shipped,time as required,
-time as ordered,customer as c 
+from SalesFacts as sf, time as shipped, time as required,
+time as ordered, customer as c 
 where sf.order_time_key = ordered.time_key and required.time_key = sf.required_time_key and
 sf.ship_time_key = shipped.time_key and c.customer_key = sf.customer_key
 and sf.order_status = 4	
