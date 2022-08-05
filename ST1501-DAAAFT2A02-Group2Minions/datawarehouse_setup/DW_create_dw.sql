@@ -108,6 +108,6 @@ CREATE TABLE SalesFacts (
     order_quantity INT NOT NULL,
     list_price DECIMAL(10, 2) NOT NULL,
     discount DECIMAL(4, 2) NOT NULL,
-    PRIMARY KEY (customer_key, staff_key, store_key, product_key,order_id)
+    PRIMARY KEY (customer_key, staff_key, store_key, product_key)
 )
 
